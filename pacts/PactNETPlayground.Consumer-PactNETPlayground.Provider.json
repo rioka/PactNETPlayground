@@ -23,18 +23,6 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "matchingRules": {
-          "body": {
-            "$": {
-              "combine": "AND",
-              "matchers": [
-                {
-                  "match": "type"
-                }
-              ]
-            }
-          }
-        },
         "status": 200
       }
     },

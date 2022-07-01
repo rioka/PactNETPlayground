@@ -49,10 +49,8 @@ public class GetEstimateTests {
             .WithRequest(HttpMethod.Get, $"/estimates/{id}")
             .WillRespond()
             .WithStatus(HttpStatusCode.OK)
-            // not sure what type of match TypeMatcher does here
-            // how "strict" it is
-            // TODO read docs
-            .WithJsonBody(new TypeMatcher(estimate));
+            // TODO read docs: what changes if we use matchers? 
+            .WithJsonBody(estimate);
 
         // assert
         await _builder

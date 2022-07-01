@@ -1,0 +1,55 @@
+{
+  "consumer": {
+    "name": "PactNETPlayground.Consumer"
+  },
+  "interactions": [
+    {
+      "description": "A valid request for an estimate",
+      "providerStates": [
+        {
+          "name": "estimate with Id 54 exists"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/estimates/54"
+      },
+      "response": {
+        "body": {
+          "customerId": "Sample customer",
+          "id": 54,
+          "mediaType": "Digital"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "matchingRules": {
+          "body": {
+            "$": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
+      }
+    }
+  ],
+  "metadata": {
+    "pactRust": {
+      "ffi": "0.2.6",
+      "mockserver": "0.8.11",
+      "models": "0.4.0"
+    },
+    "pactSpecification": {
+      "version": "3.0.0"
+    }
+  },
+  "provider": {
+    "name": "PactNETPlayground.Provider"
+  }
+}

@@ -16,6 +16,7 @@ public class EstimatesController : ControllerBase {
     public Task<ActionResult<Estimate>> Get(int id) {
 
         return Task.FromResult((ActionResult<Estimate>) Ok(new Estimate() {
+            Id = id,
             CustomerId = $"Customer-{id}",
             Date = DateTime.Now.AddDays(-((DateTime.Now.Second + 1) % 5)).Date,
             MediaType = "Digital"

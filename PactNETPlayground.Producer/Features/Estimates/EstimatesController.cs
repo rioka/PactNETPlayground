@@ -27,8 +27,9 @@ public class EstimatesController : ControllerBase {
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public Task<ActionResult> Create(CreateEstimate model) {
-    
-        var location = new Uri(Url.Link(GetByIdRoute, new { id = DateTime.Now.Millisecond })!);
-        return Task.FromResult((ActionResult) Created(location, null));
+
+        var id = DateTime.Now.Millisecond;
+        var location = new Uri(Url.Link(GetByIdRoute, new { id })!);
+        return Task.FromResult((ActionResult) Created(location, new { id }));
     }
 }

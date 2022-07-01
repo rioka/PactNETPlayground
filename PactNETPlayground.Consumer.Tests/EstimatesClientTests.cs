@@ -10,12 +10,13 @@ namespace PactNETPlayground.Consumer.Tests;
 [TestFixture]
 public class GetEstimateTests {
 
-    private IPactBuilderV3 _builder;
+    private IPactBuilderV3 _builder = null!;
 
     [SetUp]
     public void BeforeEach() {
         
         var config = new PactConfig {
+            // where we want to save generated files to be shared with the "producer" 
             PactDir = @"../../../../pacts/",
             LogLevel = PactLogLevel.Trace,
             DefaultJsonSettings = new JsonSerializerSettings {
@@ -24,6 +25,7 @@ public class GetEstimateTests {
         };
 
         _builder = Pact
+            // these two values here are used to set the name of the generated file 
             .V3("PactNETPlayground.Consumer", "PactNETPlayground.Provider", config)
             .UsingNativeBackend();    
     }
@@ -33,24 +35,32 @@ public class GetEstimateTests {
     public async Task GetEstimateTest(int id) {
         
         // arrange
+        // this is our mock response
         var estimate = new Models.Estimate() {
             Id = 54,
             CustomerId = "Sample customer",
             MediaType = "Digital"
         };
         
+        // define the interaction
         _builder
-            .UponReceiving("A valid request for an estimate")
+            .UponReceiving("A request to retrieve an estimate")
             .Given($"estimate with Id {id} exists")
             .WithRequest(HttpMethod.Get, $"/estimates/{id}")
             .WillRespond()
             .WithStatus(HttpStatusCode.OK)
+            // not sure what type of match TypeMatcher does here
+            // how "strict" it is
+            // TODO read docs
             .WithJsonBody(new TypeMatcher(estimate));
 
         // assert
         await _builder
             .VerifyAsync(async ctx => {
                 
+                // now we generate the client
+                // it is generated here because the docs clearly states to use "ctx.MockServerUri"
+                // (I guess because it's dynamically generated)
                 var client = new EstimatesClient(new HttpClient() {
                     BaseAddress = ctx.MockServerUri
                 });
@@ -61,5 +71,42 @@ public class GetEstimateTests {
                 Assert.AreEqual(estimate.CustomerId, response.CustomerId);
                 Assert.AreEqual(estimate.MediaType, response.MediaType);
         });
+    }
+
+    [Test]
+    public async Task CreateEstimateTest() {
+        
+        // arrange
+        // this is our mock response
+        var data = new {
+            Id = 54
+        };
+        var payload = new Models.CreateEstimate {
+            CustomerId = "Sample Customer",
+            MediaType = "Digital"
+        };
+
+        // define the interaction
+        _builder
+            .UponReceiving("A request to create an estimate")
+            .Given("payload is valid")
+            .WithRequest(HttpMethod.Post, "/estimates")
+            .WithJsonBody(payload)
+            .WillRespond()
+            .WithStatus(HttpStatusCode.Created)
+            .WithJsonBody(new TypeMatcher(data));
+      
+        // assert
+        await _builder
+            .VerifyAsync(async ctx => {
+                
+                var client = new EstimatesClient(new HttpClient() {
+                    BaseAddress = ctx.MockServerUri
+                });
+                
+                var estimateId = await client.CreateEstimate(payload);
+                
+                Assert.AreEqual(data.Id, estimateId);
+            });
     }
 }

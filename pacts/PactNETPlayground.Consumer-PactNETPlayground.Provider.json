@@ -4,7 +4,7 @@
   },
   "interactions": [
     {
-      "description": "A valid request for an estimate",
+      "description": "A request to retrieve an estimate",
       "providerStates": [
         {
           "name": "estimate with Id 54 exists"
@@ -36,6 +36,46 @@
           }
         },
         "status": 200
+      }
+    },
+    {
+      "description": "A request to create an estimate",
+      "providerStates": [
+        {
+          "name": "payload is valid"
+        }
+      ],
+      "request": {
+        "body": {
+          "customerId": "Sample Customer",
+          "mediaType": "Digital"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "path": "/estimates"
+      },
+      "response": {
+        "body": {
+          "id": 54
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "matchingRules": {
+          "body": {
+            "$": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 201
       }
     }
   ],

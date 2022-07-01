@@ -14,8 +14,12 @@ public class EstimatesController : ControllerBase {
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public Task<ActionResult<Estimate>> Get(int id) {
-    
-        return Task.FromResult((ActionResult<Estimate>) Ok(new Estimate()));
+
+        return Task.FromResult((ActionResult<Estimate>) Ok(new Estimate() {
+            CustomerId = $"Customer-{id}",
+            Date = DateTime.Now.AddDays(-((DateTime.Now.Second + 1) % 5)).Date,
+            MediaType = "Digital"
+        }));
     }
     
     [HttpPost()]

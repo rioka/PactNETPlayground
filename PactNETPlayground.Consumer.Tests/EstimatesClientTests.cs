@@ -45,12 +45,16 @@ public class GetEstimateTests {
         // define the interaction
         _builder
             .UponReceiving("A request to retrieve an estimate")
-                .Given($"estimate with Id {id} exists")
-                .WithRequest(HttpMethod.Get, $"/estimates/{id}")
+            .Given($"estimate with Id {id} exists")
+            .WithRequest(HttpMethod.Get, $"/estimates/{id}")
             .WillRespond()
-                .WithStatus(HttpStatusCode.OK)
-                // TODO read docs: what changes if we use matchers? 
-                .WithJsonBody(estimate);
+            .WithStatus(HttpStatusCode.OK)
+            // TODO read docs: what changes if we use matchers? 
+            .WithJsonBody(new {
+                Id = 54,
+                CustomerId = Match.Type("Sample customer"),
+                MediaType =  Match.Type("Digital")
+            });
 
         // assert
         await _builder

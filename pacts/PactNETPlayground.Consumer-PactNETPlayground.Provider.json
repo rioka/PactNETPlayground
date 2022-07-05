@@ -23,6 +23,26 @@
         "headers": {
           "Content-Type": "application/json"
         },
+        "matchingRules": {
+          "body": {
+            "$.customerId": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.mediaType": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
         "status": 200
       }
     },

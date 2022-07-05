@@ -27,7 +27,7 @@ public class GetEstimateTests {
         _builder = Pact
             // these two values here are used to set the name of the generated file 
             .V3("PactNETPlayground.Consumer", "PactNETPlayground.Provider", config)
-            .UsingNativeBackend();    
+            .UsingNativeBackend();
     }
     
     [Test]
@@ -45,12 +45,12 @@ public class GetEstimateTests {
         // define the interaction
         _builder
             .UponReceiving("A request to retrieve an estimate")
-            .Given($"estimate with Id {id} exists")
-            .WithRequest(HttpMethod.Get, $"/estimates/{id}")
+                .Given($"estimate with Id {id} exists")
+                .WithRequest(HttpMethod.Get, $"/estimates/{id}")
             .WillRespond()
-            .WithStatus(HttpStatusCode.OK)
-            // TODO read docs: what changes if we use matchers? 
-            .WithJsonBody(estimate);
+                .WithStatus(HttpStatusCode.OK)
+                // TODO read docs: what changes if we use matchers? 
+                .WithJsonBody(estimate);
 
         // assert
         await _builder
@@ -87,12 +87,12 @@ public class GetEstimateTests {
         // define the interaction
         _builder
             .UponReceiving("A request to create an estimate")
-            .Given("payload is valid")
-            .WithRequest(HttpMethod.Post, "/estimates")
-            .WithJsonBody(payload)
+                .Given("payload is valid")
+                .WithRequest(HttpMethod.Post, "/estimates")
+                .WithJsonBody(payload)
             .WillRespond()
-            .WithStatus(HttpStatusCode.Created)
-            .WithJsonBody(new TypeMatcher(data));
+                .WithStatus(HttpStatusCode.Created)
+                .WithJsonBody(new TypeMatcher(data));
       
         // assert
         await _builder

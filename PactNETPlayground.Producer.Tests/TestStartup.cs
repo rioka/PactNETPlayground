@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using PactNETPlayground.Producer.Tests.Support;
 
 namespace PactNETPlayground.Producer.Tests;
 

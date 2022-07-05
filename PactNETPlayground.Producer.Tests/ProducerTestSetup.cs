@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace PactNETPlayground.Producer.Tests;
 

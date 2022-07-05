@@ -1,4 +1,4 @@
-﻿namespace PactNETPlayground.Producer.Tests; 
+﻿namespace PactNETPlayground.Producer.Tests.Support; 
 
 public class ProviderState {
     

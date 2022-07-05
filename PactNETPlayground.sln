@@ -21,6 +21,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PactNETPlayground.Consumer.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PactNETPlayground.Producer.Tests", "PactNETPlayground.Producer.Tests\PactNETPlayground.Producer.Tests.csproj", "{65BFCDC4-7C98-457C-9270-85A37F0B1901}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pacts", "pacts", "{01826E2D-37CC-4A72-9956-828A102EAFA7}"
+	ProjectSection(SolutionItems) = preProject
+		pacts\PactNETPlayground.Consumer-PactNETPlayground.Provider.json = pacts\PactNETPlayground.Consumer-PactNETPlayground.Provider.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

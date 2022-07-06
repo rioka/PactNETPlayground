@@ -64,4 +64,13 @@ When we configure the test server, a custom middleware is added (`BearerTokenRep
 
 **TODO**
 
+## Pact Broker
+
+On the consumer side
+
+- The consumer project runs its tests using the Pact library to provide a mock service.
+- While the tests run, the mock service writes the requests and the expected responses to a JSON "pact" file - this is the consumer contract.
+- The generated pact is then published to the Pact Broker. The easiest way to do this is to publish the pact file using the [Pact Broker Client CLI](https://docs.pact.io/pact_broker/client_cli/readme)
+
+On the producer side
 

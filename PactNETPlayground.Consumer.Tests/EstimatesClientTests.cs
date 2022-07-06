@@ -90,6 +90,51 @@ public class GetEstimateTests {
     }
 
     [Test]
+    public async Task SearchEstimateTests() {
+        
+        
+        // arrange
+        // this is our mock response
+        var estimate = new Models.Estimate() {
+            Id = 54,
+            CustomerId = "Sample customer",
+            MediaType = "Digital"
+        };
+        
+        // define the interaction
+        var token = 
+            _builder
+                .UponReceiving("A request to search for estimates")
+                .Given($"estimate there 5 estimates")
+                .WithRequest(HttpMethod.Get, "/estimates")
+                .WithHeader("Authorization", $"Bearer {_token}")
+                .WillRespond()
+                .WithStatus(HttpStatusCode.OK)
+                // TODO read docs: what changes if we use matchers? 
+                .WithJsonBody(Enumerable.Range(1, 5)
+                    .Select(i => new {
+                        Id = Match.Type(i),
+                        CustomerId = Match.Type($"Sample customer {i}"),
+                        MediaType =  Match.Type("Digital")
+                    }));
+
+        // assert
+        await _builder
+            .VerifyAsync(async ctx => {
+                
+                var client = new EstimatesClient(new HttpClient() {
+                    BaseAddress = ctx.MockServerUri
+                }, _tokenProvider.Object);
+                client.UserId = "someone";
+                
+                var response = await client.SearchEstimates();
+                
+                Assert.AreEqual(5, response.Count);
+                Assert.True(response.All(x => x != null));
+            });
+    }
+    
+    [Test]
     public async Task CreateEstimateTest() {
         
         // arrange

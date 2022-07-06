@@ -4,6 +4,178 @@
   },
   "interactions": [
     {
+      "description": "A request to search for estimates",
+      "providerStates": [
+        {
+          "name": "estimate there 5 estimates"
+        }
+      ],
+      "request": {
+        "headers": {
+          "Authorization": "Bearer fake-token"
+        },
+        "method": "GET",
+        "path": "/estimates"
+      },
+      "response": {
+        "body": [
+          {
+            "customerId": "Sample customer 1",
+            "id": 1,
+            "mediaType": "Digital"
+          },
+          {
+            "customerId": "Sample customer 2",
+            "id": 2,
+            "mediaType": "Digital"
+          },
+          {
+            "customerId": "Sample customer 3",
+            "id": 3,
+            "mediaType": "Digital"
+          },
+          {
+            "customerId": "Sample customer 4",
+            "id": 4,
+            "mediaType": "Digital"
+          },
+          {
+            "customerId": "Sample customer 5",
+            "id": 5,
+            "mediaType": "Digital"
+          }
+        ],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "matchingRules": {
+          "body": {
+            "$[0].customerId": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$[0].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$[0].mediaType": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$[1].customerId": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$[1].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$[1].mediaType": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$[2].customerId": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$[2].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$[2].mediaType": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$[3].customerId": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$[3].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$[3].mediaType": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$[4].customerId": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$[4].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$[4].mediaType": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
+      }
+    },
+    {
       "description": "A request to retrieve an estimate",
       "providerStates": [
         {

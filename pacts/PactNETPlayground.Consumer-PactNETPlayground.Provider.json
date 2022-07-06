@@ -11,6 +11,9 @@
         }
       ],
       "request": {
+        "headers": {
+          "Authorization": "Bearer fake-token"
+        },
         "method": "GET",
         "path": "/estimates/54"
       },
@@ -59,6 +62,7 @@
           "mediaType": "Digital"
         },
         "headers": {
+          "Authorization": "Bearer fake-token",
           "Content-Type": "application/json"
         },
         "method": "POST",

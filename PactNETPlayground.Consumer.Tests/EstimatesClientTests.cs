@@ -1,9 +1,12 @@
 ﻿using System.Net;
+using Moq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using NUnit.Framework;
 using PactNet;
 using PactNet.Matchers;
+using PactNETPlayground.Shared;
+using Match = PactNet.Matchers.Match;
 
 namespace PactNETPlayground.Consumer.Tests; 
 
@@ -11,6 +14,8 @@ namespace PactNETPlayground.Consumer.Tests;
 public class GetEstimateTests {
 
     private IPactBuilderV3 _builder = null!;
+    private Mock<ITokenProvider> _tokenProvider = null!;
+    private string _token = null!;
 
     [SetUp]
     public void BeforeEach() {
@@ -28,6 +33,12 @@ public class GetEstimateTests {
             // these two values here are used to set the name of the generated file 
             .V3("PactNETPlayground.Consumer", "PactNETPlayground.Provider", config)
             .UsingNativeBackend();
+
+        _token = "fake-token";
+        _tokenProvider = new Mock<ITokenProvider>();
+        _tokenProvider
+            .Setup(p => p.GetToken(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IDictionary<string, string>>()))
+            .ReturnsAsync(_token);
     }
     
     [Test]
@@ -43,18 +54,20 @@ public class GetEstimateTests {
         };
         
         // define the interaction
+        var token = 
         _builder
             .UponReceiving("A request to retrieve an estimate")
-            .Given($"estimate with Id {id} exists")
-            .WithRequest(HttpMethod.Get, $"/estimates/{id}")
+                .Given($"estimate with Id {id} exists")
+                .WithRequest(HttpMethod.Get, $"/estimates/{id}")
+                .WithHeader("Authorization", $"Bearer {_token}")
             .WillRespond()
-            .WithStatus(HttpStatusCode.OK)
-            // TODO read docs: what changes if we use matchers? 
-            .WithJsonBody(new {
-                Id = 54,
-                CustomerId = Match.Type("Sample customer"),
-                MediaType =  Match.Type("Digital")
-            });
+                .WithStatus(HttpStatusCode.OK)
+                // TODO read docs: what changes if we use matchers? 
+                .WithJsonBody(new {
+                    Id = 54,
+                    CustomerId = Match.Type("Sample customer"),
+                    MediaType =  Match.Type("Digital")
+                });
 
         // assert
         await _builder
@@ -65,7 +78,8 @@ public class GetEstimateTests {
                 // (I guess because it's dynamically generated)
                 var client = new EstimatesClient(new HttpClient() {
                     BaseAddress = ctx.MockServerUri
-                });
+                }, _tokenProvider.Object);
+                client.UserId = "someone";
                 
                 var response = await client.GetEstimate(id);
                 
@@ -94,6 +108,7 @@ public class GetEstimateTests {
                 .Given("payload is valid")
                 .WithRequest(HttpMethod.Post, "/estimates")
                 .WithJsonBody(payload)
+                .WithHeader("Authorization", $"Bearer {_token}")
             .WillRespond()
                 .WithStatus(HttpStatusCode.Created)
                 .WithJsonBody(new TypeMatcher(data));
@@ -104,7 +119,8 @@ public class GetEstimateTests {
                 
                 var client = new EstimatesClient(new HttpClient() {
                     BaseAddress = ctx.MockServerUri
-                });
+                }, _tokenProvider.Object);
+                client.UserId = "someone";
                 
                 var estimateId = await client.CreateEstimate(payload);
                 

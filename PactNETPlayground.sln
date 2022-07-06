@@ -26,6 +26,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pacts", "pacts", "{01826E2D
 		pacts\PactNETPlayground.Consumer-PactNETPlayground.Provider.json = pacts\PactNETPlayground.Consumer-PactNETPlayground.Provider.json
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{AEF4A1FE-2084-4E21-BD57-B11E422A025A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PactNETPlayground.Shared", "PactNETPlayground.Shared\PactNETPlayground.Shared.csproj", "{03AA3184-38F8-46CC-A9D4-7F3281B8337D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,7 @@ Global
 		{D70C071D-F831-43C3-B052-D5AE37799C6B} = {73A50239-CD0C-4490-914A-0398D97E36F8}
 		{125C6FD3-C892-4F91-974C-5671C402F2B1} = {73A50239-CD0C-4490-914A-0398D97E36F8}
 		{65BFCDC4-7C98-457C-9270-85A37F0B1901} = {64BAF938-B577-44ED-A1F3-5334A4AC3204}
+		{03AA3184-38F8-46CC-A9D4-7F3281B8337D} = {AEF4A1FE-2084-4E21-BD57-B11E422A025A}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{2D68E08B-1BDC-483B-976A-E457CB0B5598}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -57,5 +62,9 @@ Global
 		{65BFCDC4-7C98-457C-9270-85A37F0B1901}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65BFCDC4-7C98-457C-9270-85A37F0B1901}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{65BFCDC4-7C98-457C-9270-85A37F0B1901}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03AA3184-38F8-46CC-A9D4-7F3281B8337D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03AA3184-38F8-46CC-A9D4-7F3281B8337D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03AA3184-38F8-46CC-A9D4-7F3281B8337D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03AA3184-38F8-46CC-A9D4-7F3281B8337D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

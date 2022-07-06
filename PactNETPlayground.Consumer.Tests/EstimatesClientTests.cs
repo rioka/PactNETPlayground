@@ -105,7 +105,7 @@ public class GetEstimateTests {
         var token = 
             _builder
                 .UponReceiving("A request to search for estimates")
-                .Given($"estimate there 5 estimates")
+                .Given($"there are 5 estimates")
                 .WithRequest(HttpMethod.Get, "/estimates")
                 .WithHeader("Authorization", $"Bearer {_token}")
                 .WillRespond()

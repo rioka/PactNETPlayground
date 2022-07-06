@@ -4,6 +4,7 @@ using Newtonsoft.Json.Serialization;
 using NUnit.Framework;
 using PactNet;
 using PactNet.Matchers;
+using PactNETPlayground.Shared;
 
 namespace PactNETPlayground.Consumer.Tests; 
 
@@ -11,6 +12,7 @@ namespace PactNETPlayground.Consumer.Tests;
 public class GetEstimateTests {
 
     private IPactBuilderV3 _builder = null!;
+    private ITokenProvider _tokenProvider = null!;
 
     [SetUp]
     public void BeforeEach() {
@@ -28,6 +30,8 @@ public class GetEstimateTests {
             // these two values here are used to set the name of the generated file 
             .V3("PactNETPlayground.Consumer", "PactNETPlayground.Provider", config)
             .UsingNativeBackend();
+
+        _tokenProvider = new TokenProvider();
     }
     
     [Test]
@@ -65,7 +69,7 @@ public class GetEstimateTests {
                 // (I guess because it's dynamically generated)
                 var client = new EstimatesClient(new HttpClient() {
                     BaseAddress = ctx.MockServerUri
-                });
+                }, _tokenProvider);
                 
                 var response = await client.GetEstimate(id);
                 
@@ -104,7 +108,7 @@ public class GetEstimateTests {
                 
                 var client = new EstimatesClient(new HttpClient() {
                     BaseAddress = ctx.MockServerUri
-                });
+                }, _tokenProvider);
                 
                 var estimateId = await client.CreateEstimate(payload);
                 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PactNETPlayground.Consumer.Models;
+using PactNETPlayground.Shared;
 
 namespace PactNETPlayground.Consumer {
 
@@ -10,6 +11,8 @@ namespace PactNETPlayground.Consumer {
             var serviceCollection = new ServiceCollection()
                 .AddLogging();
 
+            serviceCollection.AddScoped<ITokenProvider, TokenProvider>();
+            
             serviceCollection
                 .AddHttpClient<EstimatesClient>(c => {
                     c.BaseAddress = new Uri("https://localhost:7096/");
@@ -17,7 +20,8 @@ namespace PactNETPlayground.Consumer {
             
             var serviceProvider = serviceCollection.BuildServiceProvider();
 
-            var client = serviceProvider.GetService<EstimatesClient>();
+            var client = serviceProvider.GetRequiredService<EstimatesClient>();
+            client.UserId = "AnyTown";
 
             var estimate = await client.GetEstimate(123);
 

@@ -1,31 +1,45 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PactNETPlayground.Consumer.Models;
+using PactNETPlayground.Shared;
 
 namespace PactNETPlayground.Consumer;
 
 internal class EstimatesClient {
     
     private readonly HttpClient _client;
+    private readonly ITokenProvider _tokenProvider;
+
+    public string? UserId { get; set; } 
     
-    public EstimatesClient(HttpClient client) {
+    public EstimatesClient(HttpClient client, ITokenProvider tokenProvider) {
 
         _client = client;
+        _tokenProvider = tokenProvider;
     }
 
     public async Task<Estimate> GetEstimate(int id, CancellationToken cancellationToken = default) {
 
-        using (var response = await _client.GetAsync($"estimates/{id}", cancellationToken)) {
+        using (var message = new HttpRequestMessage(HttpMethod.Get, $"estimates/{id}")) {
 
-            if (response.IsSuccessStatusCode) {
+            if (!string.IsNullOrWhiteSpace(UserId)) {
                 
-                var result = await response.Content.ReadAsStringAsync(cancellationToken);
-
-                return JsonConvert.DeserializeObject<Estimate>(result);
+                message.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await _tokenProvider.GetToken(UserId));
             }
+            
+            using (var response = await _client.SendAsync(message, cancellationToken)) {
 
-            throw new Exception($"Request failed: {response.StatusCode}");
+                if (response.IsSuccessStatusCode) {
+                
+                    var result = await response.Content.ReadAsStringAsync(cancellationToken);
+
+                    return JsonConvert.DeserializeObject<Estimate>(result);
+                }
+
+                throw new Exception($"Request failed: {response.StatusCode}");
+            }
         }
     }
 

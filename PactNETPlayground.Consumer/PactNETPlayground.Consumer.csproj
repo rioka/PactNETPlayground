@@ -15,6 +15,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PactNETPlayground.Shared\PactNETPlayground.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <InternalsVisibleTo Include="$(MSBuildProjectName).Tests"/>
   </ItemGroup>
 

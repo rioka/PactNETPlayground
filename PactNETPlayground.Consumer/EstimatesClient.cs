@@ -24,10 +24,7 @@ internal class EstimatesClient {
 
         using (var message = new HttpRequestMessage(HttpMethod.Get, $"estimates/{id}")) {
 
-            if (!string.IsNullOrWhiteSpace(UserId)) {
-                
-                message.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await _tokenProvider.GetToken(UserId));
-            }
+            await AddAuthorization(message);
             
             using (var response = await _client.SendAsync(message, cancellationToken)) {
 
@@ -45,24 +42,42 @@ internal class EstimatesClient {
 
     public async Task<int> CreateEstimate(CreateEstimate model, CancellationToken cancellationToken = default) {
         
-        using (var response = await _client.PostAsJsonAsync("estimates", model, cancellationToken)) {
+        using (var message = new HttpRequestMessage(HttpMethod.Post, "estimates")) {
 
-            if (response.IsSuccessStatusCode) {
+            await AddAuthorization(message);
+            message.Content = JsonContent.Create(model);
                 
-                var result = await response.Content.ReadAsStringAsync(cancellationToken);
-                var payload = JObject.Parse(result);
-                var idObj = payload["id"];
-                var id = idObj?.Value<int>(); 
+            using (var response = await _client.SendAsync(message, cancellationToken)) {
+
+                if (response.IsSuccessStatusCode) {
+                
+                    var result = await response.Content.ReadAsStringAsync(cancellationToken);
+                    var payload = JObject.Parse(result);
+                    var idObj = payload["id"];
+                    var id = idObj?.Value<int>(); 
                         
-                if (id.HasValue) {
+                    if (id.HasValue) {
                     
-                    return id.Value;
+                        return id.Value;
+                    }
+
+                    throw new Exception($"Unexpected payload: {payload}");
                 }
 
-                throw new Exception($"Unexpected payload: {payload}");
+                throw new Exception($"Request failed: {response.StatusCode}");
             }
-
-            throw new Exception($"Request failed: {response.StatusCode}");
         }
     }
+
+    #region Internals
+
+    private async Task AddAuthorization(HttpRequestMessage message) {
+ 
+        if (!string.IsNullOrWhiteSpace(UserId)) {
+                
+            message.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await _tokenProvider.GetToken(UserId));
+        }
+    }
+
+    #endregion
 }

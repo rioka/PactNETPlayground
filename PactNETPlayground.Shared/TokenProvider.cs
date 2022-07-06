@@ -1,17 +1,13 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
 namespace PactNETPlayground.Shared; 
 
-public class Security {
+public class TokenProvider : ITokenProvider {
 
-    public static readonly SymmetricSecurityKey IssuerSigningKey = new(Encoding.UTF8.GetBytes("zoff-gentile-cabrini"));
-    public static readonly string Issuer = "https://fake.onelogin.org";
-   
-    public static string GetToken(string userId, string audience = "producer-api", IDictionary<string, string>? customClaims = null) {
+    public Task<string> GetToken(string userId, string audience = "producer-api", IDictionary<string, string>? customClaims = null) {
         
         var claims = new List<Claim> {
             new (ClaimTypes.Name, userId)
@@ -26,15 +22,16 @@ public class Security {
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Issuer = Issuer,
+            Issuer = SecuritySettings.Issuer,
             Audience = audience,
             Subject = identity,
             Expires = DateTime.UtcNow.AddHours(1),
-            SigningCredentials = new SigningCredentials(IssuerSigningKey, SecurityAlgorithms.HmacSha256Signature)
+            SigningCredentials = new SigningCredentials(SecuritySettings.IssuerSigningKey, SecurityAlgorithms.HmacSha256Signature)
         };
 
         var tokenHandler = new JwtSecurityTokenHandler();
         var token = tokenHandler.CreateToken(tokenDescriptor);
-        return tokenHandler.WriteToken(token);
-    }
+        
+        return Task.FromResult(tokenHandler.WriteToken(token));
+    } 
 }

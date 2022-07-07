@@ -20,7 +20,8 @@ public class EstimatesController : ControllerBase {
             Id = id,
             CustomerId = $"Customer-{id}",
             Date = DateTime.Now.AddDays(-((DateTime.Now.Second + 1) % 5)).Date,
-            MediaType = "Digital"
+            MediaType = "Digital",
+            Contact = $"someone-{id}@nowhere.org"
         }));
     }
     
@@ -46,7 +47,8 @@ public class EstimatesController : ControllerBase {
                     Id = id,
                     CustomerId = $"Customer-{id}",
                     Date = DateTime.Now.AddDays(-((DateTime.Now.Second + 1) % 5)).Date,
-                    MediaType = "Digital"
+                    MediaType = "Digital",
+                    Contact = $"someone-{id}@nowhere.org"
                 };
             });
         

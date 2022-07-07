@@ -9,4 +9,6 @@ public class Estimate {
     public string CustomerId { get; set; } = null!;
 
     public string MediaType { get; set; } = null!;
+    
+    public string? Contact { get; set; }
 }

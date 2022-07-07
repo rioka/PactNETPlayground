@@ -30,7 +30,8 @@ internal class ProviderStateMiddleware {
         // Note: currently doing nothing as there is no actual persistence
         _providerStates = new Dictionary<string, Action<IDictionary<string, string>>>() {
             ["estimate with Id 54 exists"] =  InsertEstimateIntoDatabase,
-            ["payload is valid"] = NoOp
+            ["payload is valid"] = NoOp,
+            ["there are 5 estimates"] = NoOp
         };
     }
     

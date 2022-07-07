@@ -40,6 +40,27 @@ internal class EstimatesClient {
         }
     }
 
+
+    public async Task<IList<Estimate>> SearchEstimates(CancellationToken cancellationToken = default) {
+        
+        using (var message = new HttpRequestMessage(HttpMethod.Get, "estimates")) {
+
+            await AddAuthorization(message);
+            
+            using (var response = await _client.SendAsync(message, cancellationToken)) {
+
+                if (response.IsSuccessStatusCode) {
+                
+                    var result = await response.Content.ReadAsStringAsync(cancellationToken);
+
+                    return JsonConvert.DeserializeObject<List<Estimate>>(result);
+                }
+
+                throw new Exception($"Request failed: {response.StatusCode}");
+            }
+        }
+    }
+    
     public async Task<int> CreateEstimate(CreateEstimate model, CancellationToken cancellationToken = default) {
         
         using (var message = new HttpRequestMessage(HttpMethod.Post, "estimates")) {

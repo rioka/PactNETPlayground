@@ -1,4 +1,6 @@
-﻿namespace PactNETPlayground.Producer.Features.Estimates.Models.Output; 
+﻿using PactNETPlayground.Producer.Domain;
+
+namespace PactNETPlayground.Producer.Features.Estimates.Models.Output; 
 
 public class Estimate {
 
@@ -8,5 +10,5 @@ public class Estimate {
     
     public string CustomerId { get; set; } = null!;
 
-    public string MediaType { get; set; } = null!;
+    public MediaType MediaType { get; set; }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Security.Cryptography;
 using Microsoft.AspNetCore.Mvc;
+using PactNETPlayground.Producer.Domain;
 using PactNETPlayground.Producer.Features.Estimates.Models.Input;
 using PactNETPlayground.Producer.Features.Estimates.Models.Output;
 
@@ -20,7 +21,7 @@ public class EstimatesController : ControllerBase {
             Id = id,
             CustomerId = $"Customer-{id}",
             Date = DateTime.Now.AddDays(-((DateTime.Now.Second + 1) % 5)).Date,
-            MediaType = "Digital"
+            MediaType = MediaType.Digital
         }));
     }
     
@@ -46,7 +47,7 @@ public class EstimatesController : ControllerBase {
                     Id = id,
                     CustomerId = $"Customer-{id}",
                     Date = DateTime.Now.AddDays(-((DateTime.Now.Second + 1) % 5)).Date,
-                    MediaType = "Digital"
+                    MediaType = i % 2 == 0 ? MediaType.Digital : MediaType.TV
                 };
             });
         
